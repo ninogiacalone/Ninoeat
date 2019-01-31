@@ -7,4 +7,6 @@
     <string name="Confirm">Confirm</string>
     <string name="email_errata">Emailerrata </string>
     <string name="numero_telefono">NumeroTelefono</string>
+    <string name="checkout_menu">Checkout</string>
+
 </resources>
