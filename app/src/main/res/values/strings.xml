@@ -1,6 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Ninoeat</string>
-    <string name="app_name">App</string>
     <string name="email_hint">insert email</string>
     <string name="pass_hint">insert password</string>
     <string name="login">Login</string>
