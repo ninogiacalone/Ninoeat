@@ -1,52 +1,158 @@
 package com.giaca.antonino.ninoeat;
 
 import android.content.Intent;
-
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
-
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Switch;
+import android.widget.Toast;
 
 /**
- * Created by anton on 31/01/2019.
+ * Created by anton on 28/01/2019.
  */
 
-public class LoginActivity extends AppCompatActivity implements  View.OnClickListener{
-    TextView emailTV;
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+    Button loginButton;
+    Button RegisterBtn;
+    EditText  emailEt;
+    EditText passwordEt;
+    Switch switchbtn;
+    LinearLayout ll;
+    boolean a=false;
+    final  int len_pass=6;
+
+
+
+
+
+
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.login_activity);
-        emailTV=findViewById(R.id.email_tv);
-        Intent intent = getIntent();
+        emailEt = findViewById(R.id.email_et);
+        passwordEt = findViewById(R.id.password_et);
+        loginButton = findViewById(R.id.login_Button);
+        RegisterBtn = findViewById(R.id.register_Button);
+        switchbtn=findViewById(R.id.switch_btn);
+        if(hasInvitationCode())
+            RegisterBtn.setVisibility(View.INVISIBLE);
+        loginButton.setOnClickListener(this);
+        RegisterBtn.setOnClickListener(this);
+        switchbtn.setOnClickListener(this);
+        ll=findViewById(R.id.ll_layout);
 
-        final String email=intent.getStringExtra("email");
-        emailTV.setText(email);
+        loginButton=findViewById(R.id.login_Button);
+        Log.i("MainActivity","Activity created");
+    }
+    private boolean hasInvitationCode(){
 
-        final TextView sendemail=findViewById(R.id.send_email);
-
-        sendemail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("plain/text");
-                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{email});
-                intent.putExtra(Intent.EXTRA_SUBJECT, "Oggetto Email");
-                startActivity(Intent.createChooser(intent,""));
-            }
-        });
+        return false;
     }
 
 
+
+
+
+
+
+    private void doLogin() {
+        if(checkemail()&&checkpasw()==true){
+            Intent intent1= new Intent(LoginActivity.this,RegisterActivity.class);
+            String email=emailEt.getText().toString();
+            intent1.putExtra("email",email);
+            startActivity(intent1);
+            finish();
+        }
+
+
+
+
+
+    }
+
+
+
+
+
+    public void doRegister(){
+
+        Intent intet= new Intent(LoginActivity.this,RegisterActivity.class);
+        setContentView(R.layout.register_activity);
+        startActivity(intet);
+        finish();
+
+    }
+    private boolean checkpasw(){
+        if (passwordEt.getText().length()>len_pass) {
+            String stringa = "password ok";
+            showToast(stringa);
+            return true;
+
+
+        } else {
+            String stringa = "password errata";
+            showToast(stringa);
+            return false;
+        }
+    }
+    private boolean checkemail(){
+        String email = emailEt.getText().toString();
+
+        if (email.contains("@") && email.contains(".") && email.length() > 2) {
+            String stringa1 = "email ok";
+            showToast(stringa1);
+            return true;
+
+
+        } else {
+            String string1 = "email errata";
+            showToast(string1);
+            return false;
+
+
+        }
+    }
+
+    private void showToast(String stringa){
+        Toast.makeText(this,stringa ,Toast.LENGTH_LONG).show();
+
+
+    }
     @Override
     public void onClick(View view) {
+        //TODO do something
+        if(view.getId()==R.id.login_Button){
+            doLogin();
+            //TODO do login
+        }else if (view.getId()==R.id.register_Button){
+            //TODO go to register activity
+            doRegister();
+        }
+        if(view.getId()==R.id.switch_btn){
+            changecolour(ll);
+        }
+    }
+
+    private void changecolour(LinearLayout ll) {
+        if (!a) {
+            ll.setBackgroundColor(Color.GRAY);
+            a = true;
+        } else {
+            ll.setBackgroundColor(Color.WHITE);
+            a=false;
+        }
 
     }
 }
-
-
-

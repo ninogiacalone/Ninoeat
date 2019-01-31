@@ -1,21 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_layout"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/email_et"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="WELCOME"/>
-    <TextView
-        android:layout_width="wrap_content"
+        android:inputType="textEmailAddress"
+        android:hint="@string/email_hint"
+        />
+    <EditText
+        android:id="@+id/password_et"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/email_tv"/>
+        android:inputType="textPassword"
+        android:hint="@string/pass_hint"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/numero_telefono"
+        android:inputType="phone"/>
 
-    <Button
-        android:id="@+id/send_email"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SEND EMAIL"/>
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/login_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:hint="@string/login"
+            android:textColorHint="@color/colorPrimaryDark"
+            tools:ignore="InvalidId" />
+
+        <Button
+            android:id="@+id/register_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/register"
+            android:textColorHint="@color/colorPrimaryDark"
+            tools:ignore="InvalidId" />
+
+
+
+
+
+    </LinearLayout>
+
+    <Switch
+        android:id="@+id/switch_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="CAMBIA BACKGROUND"
+
+        />
+
+
 
 </LinearLayout>
