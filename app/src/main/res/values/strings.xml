@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Ninoeat</string>
+    <string name="app_name">App</string>
+    <string name="email_hint">insert email</string>
+    <string name="pass_hint">insert password</string>
+    <string name="login">Login</string>
+    <string name="register">Registrati</string>
+    <string name="Confirm">Confirm</string>
+    <string name="email_errata">Emailerrata </string>
+    <string name="numero_telefono">NumeroTelefono</string>
 </resources>
