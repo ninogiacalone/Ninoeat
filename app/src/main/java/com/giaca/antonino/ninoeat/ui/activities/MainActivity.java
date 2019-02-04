@@ -10,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.giaca.antonino.ninoeat.R;
 import com.giaca.antonino.ninoeat.ui.activities.adapters.Restaurant_adapters;
@@ -21,18 +23,20 @@ import java.util.ArrayList;
  * Created by anton on 31/01/2019.
  */
 
-public class MainActivity  extends AppCompatActivity {
+public class MainActivity  extends AppCompatActivity implements View.OnClickListener {
     RecyclerView restaurantRV;
     RecyclerView.LayoutManager layoutManager;
     Restaurant_adapters adapter;
     ArrayList<Restaurant> arrayList;
 
-
+Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        button=findViewById(R.id.btnmenu);
+        button.setOnClickListener(this);
         restaurantRV = findViewById(R.id.places_rv);
         layoutManager = new LinearLayoutManager(this);
         adapter = new Restaurant_adapters(this, getData());
@@ -78,5 +82,9 @@ public class MainActivity  extends AppCompatActivity {
         }
 
 
+    @Override
+    public void onClick(View view) {
+//TO DO INTET
     }
+}
 

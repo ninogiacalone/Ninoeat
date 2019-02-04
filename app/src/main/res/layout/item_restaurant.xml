@@ -26,6 +26,7 @@
                 android:layout_margin="5dp"
                 android:src="@drawable/images2"
 
+
                 />
 
             <LinearLayout
@@ -64,7 +65,8 @@
                     android:layout_height="50dp"
                     android:background="#ffffff"
                     android:text="menu"
-                    android:backgroundTintMode="screen"
+                    android:backgroundTintMode="src_over"
+
 
                     android:textColor="@color/colorPrimary" />
             </LinearLayout>

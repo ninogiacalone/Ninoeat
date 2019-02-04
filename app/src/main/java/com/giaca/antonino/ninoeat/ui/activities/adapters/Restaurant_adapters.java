@@ -17,7 +17,7 @@ import com.giaca.antonino.ninoeat.ui.activities.Restaurant;
 
 import java.util.ArrayList;
 
-public class Restaurant_adapters extends RecyclerView.Adapter{
+public class Restaurant_adapters extends RecyclerView.Adapter {
 
     private LayoutInflater inflater;
     private ArrayList<Restaurant> data;
@@ -71,6 +71,7 @@ public class Restaurant_adapters extends RecyclerView.Adapter{
 
 
         }
+
 
     }
 
