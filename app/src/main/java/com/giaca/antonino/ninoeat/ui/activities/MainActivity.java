@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * Created by anton on 31/01/2019.
  */
 
-public class MainActivity  extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity  extends AppCompatActivity  {
     RecyclerView restaurantRV;
     RecyclerView.LayoutManager layoutManager;
     Restaurant_adapters adapter;
@@ -35,8 +35,8 @@ Button button;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        button=findViewById(R.id.btnmenu);
-        button.setOnClickListener(this);
+       /* button=findViewById(R.id.btnmenu);
+        button.setOnClickListener(this);*/
         restaurantRV = findViewById(R.id.places_rv);
         layoutManager = new LinearLayoutManager(this);
         adapter = new Restaurant_adapters(this, getData());
@@ -82,9 +82,9 @@ Button button;
         }
 
 
-    @Override
+  /*  @Override
     public void onClick(View view) {
 //TO DO INTENT
-    }
+    }*/
 }
 
