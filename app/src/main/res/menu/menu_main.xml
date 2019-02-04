@@ -4,8 +4,10 @@
 
 
     <item
+        android:icon="@drawable/baseline_perm_identity_black_48"
         android:id="@+id/login_menu"
         android:title="@string/login"
+
         app:showAsAction="always"/>
 <item
     android:id="@+id/checkout_menu"
