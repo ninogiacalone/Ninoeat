@@ -84,7 +84,7 @@ Button button;
 
     @Override
     public void onClick(View view) {
-//TO DO INTET
+//TO DO INTENT
     }
 }
 
