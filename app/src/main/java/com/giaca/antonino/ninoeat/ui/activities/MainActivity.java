@@ -25,9 +25,8 @@ public class MainActivity  extends AppCompatActivity {
     RecyclerView restaurantRV;
     RecyclerView.LayoutManager layoutManager;
     Restaurant_adapters adapter;
-    ArrayList<String> arrayList;
-    ArrayList<String> arrayList1;
-   //ArrayList<Float> arrayList2;
+    ArrayList<Restaurant> arrayList;
+
 
 
     @Override
@@ -36,41 +35,28 @@ public class MainActivity  extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         restaurantRV = findViewById(R.id.places_rv);
         layoutManager = new LinearLayoutManager(this);
-        adapter = new Restaurant_adapters(this, getData(),getData1());
+        adapter = new Restaurant_adapters(this, getData());
 
         restaurantRV.setLayoutManager(layoutManager);
         restaurantRV.setAdapter(adapter);
     }
 
-    private ArrayList<String> getData(){
+    private ArrayList<Restaurant> getData(){
         arrayList = new ArrayList<>();
-        arrayList.add("McDonald's");
-        arrayList.add("Burger king");
-        arrayList.add("KFC");
-        arrayList.add("Calabrese");
+        arrayList.add(new Restaurant("Mc Donalds","Via Tiburtina",12.40f));
+        arrayList.add(new Restaurant("Burger king","Via Roma",10.50f));
+        arrayList.add(new Restaurant("Pizzeria da ciccio","Via Marsala",10.0f));
+        arrayList.add(new Restaurant("Mangi Pizza","Via Casal",15.50f));
+
+
 
 
 
         return arrayList;
     }
 
-private ArrayList<String> getData1(){
-        arrayList1=new ArrayList<>();
-        arrayList1.add("Via Sandro Sandri");
-        arrayList1.add("Via Marsala");
-        arrayList1.add("vai roma");
-        arrayList1.add("via soci");
-        return  arrayList1;
-}
-/*private ArrayList<Float>getData2(){
 
-    arrayList2=new ArrayList<>();
-    arrayList2.add(14,23f);
-    arrayList2.add(11,45f);
-    arrayList2.add(20,50f);
-    return arrayList2;
-}
-   */ @Override
+ @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
