@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
 
     <item
-        android:icon="@drawable/baseline_perm_identity_black_48"
+        android:icon="@drawable/twotone_perm_identity_white_48"
         android:id="@+id/login_menu"
         android:title="@string/login"
 
         app:showAsAction="always"/>
 <item
     android:id="@+id/checkout_menu"
-    android:title="@string/checkout_menu"/>
+    android:title="@string/checkout_menu"
+    />
+    <item
+        android:title=""
+        android:id="@+id/grid_menu"
+        android:icon="@drawable/twotone_grid_on_white_48"
+
+        app:showAsAction="always"/>
+
+
+
 
 </menu>
