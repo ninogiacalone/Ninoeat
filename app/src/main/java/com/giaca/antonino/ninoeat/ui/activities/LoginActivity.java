@@ -12,7 +12,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
-
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import com.giaca.antonino.ninoeat.R;
 
 /**
@@ -31,7 +33,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
 
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
 
 

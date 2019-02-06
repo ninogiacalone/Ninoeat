@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,7 +37,8 @@ public class RegisterActivity extends AppCompatActivity {
             setContentView(R.layout.register_activity);
             emailEt = findViewById(R.id.email_et);
             passwordEt = findViewById(R.id.password_et);
-            register = findViewById(R.id.register_Button);
+            register = findViewById(R.id.register_Butto2);
+
             numerotel = findViewById(R.id.phone_et);
 
 
@@ -44,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
             emailEt.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+                    Log.i("before",charSequence.toString());
                 }
 
                 @Override
@@ -116,11 +118,11 @@ public class RegisterActivity extends AppCompatActivity {
         }
 
 
-        private void btncheck(Button btn){
-            if(emailok&&passwordok&&numerook){
-                btn.setEnabled(true);
+        private void btncheck(Button button){
+            if(emailok && passwordok && numerook){
+                button.setEnabled(true);
             }else
-                btn.setEnabled(false);
+                button.setEnabled(false);
         }
         private void telcheck(String numero){
             if(numero.length()>6)

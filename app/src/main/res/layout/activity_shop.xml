@@ -8,8 +8,10 @@
         android:orientation="horizontal"
         android:id="@+id/header"
         android:layout_height="wrap_content">
+<ImageView
+    android:layout_width="120dp"
+    android:layout_height="120dp" />
 
-        <!-- TODO  Logo and name-->
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,14 +31,28 @@
         android:orientation="vertical"
         android:layout_alignParentBottom="true"
         android:layout_height="wrap_content">
-
-        <!-- TODO  progressBar etc.-->
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Footer"/>
+            android:text="TOTAL"/>
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:indeterminateOnly="false"
+            android:progress="50"
+            android:max="100"
+            android:id="@+id/progress_bar"
+            android:progressTint="#f2a45b"
+            />
 
+
+<Button
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/check_out"
+    android:hint="Checkout"/>
     </LinearLayout>
 
 </RelativeLayout>

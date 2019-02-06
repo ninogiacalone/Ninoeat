@@ -12,6 +12,16 @@ import com.giaca.antonino.ninoeat.R;
 
 public class ShopActivity  extends AppCompatActivity{
 
+    String cibo;
+    Float prezzo;
+    String Ingredienti;
+
+    public ShopActivity(String cibo, String ingredienti) {
+        this.cibo = cibo;
+        this.Ingredienti = Ingredienti;
+        this.prezzo=prezzo;
+    }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
