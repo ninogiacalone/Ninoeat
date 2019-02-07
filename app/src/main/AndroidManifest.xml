@@ -12,9 +12,6 @@
 
 
 
-        <activity android:name=".ui.activities.CheckoutActivity" />
-        <activity android:name=".ui.activities.ShopActivity" />
-
 
         <activity android:name=".ui.activities.MainActivity">
             <intent-filter>
@@ -24,6 +21,9 @@
             </intent-filter>
 
         </activity>
+
+        <activity android:name=".ui.activities.CheckoutActivity" />
+        <activity android:name=".ui.activities.ShopActivity" />
 
 
 

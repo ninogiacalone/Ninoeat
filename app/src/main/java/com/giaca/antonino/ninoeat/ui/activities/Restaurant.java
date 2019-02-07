@@ -2,6 +2,8 @@ package com.giaca.antonino.ninoeat.ui.activities;
 
 import android.media.Image;
 
+import java.util.ArrayList;
+
 /**
  * Created by anton on 04/02/2019.
  */
@@ -19,6 +21,8 @@ public class Restaurant {
         this.prezzo = prezzo;
         this.urlimm=urlimm;
     }
+
+
 
     public String getUrlimm() {
         return urlimm;
