@@ -12,9 +12,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+
 import com.giaca.antonino.ninoeat.R;
 
 /**
@@ -32,18 +30,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     final  int len_pass=6;
 
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-
-
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -55,8 +41,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginButton = findViewById(R.id.login_Button);
         RegisterBtn = findViewById(R.id.register_Button);
         switchbtn=findViewById(R.id.switch_btn);
-        if(hasInvitationCode())
-            RegisterBtn.setVisibility(View.INVISIBLE);
+
         loginButton.setOnClickListener(this);
         RegisterBtn.setOnClickListener(this);
         switchbtn.setOnClickListener(this);
@@ -64,11 +49,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         loginButton=findViewById(R.id.login_Button);
         Log.i("MainActivity","Activity created");
+        if(hasInvitationCode())
+            RegisterBtn.setVisibility(View.INVISIBLE);
     }
     private boolean hasInvitationCode(){
 
         return false;
     }
+
 
 
 
@@ -84,9 +72,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(intent1);
             finish();
         }
-
-
-
 
 
     }
@@ -141,12 +126,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
     @Override
     public void onClick(View view) {
-        //TODO do something
+
         if(view.getId()==R.id.login_Button){
             doLogin();
-            //TODO do login
+
         }else if (view.getId()==R.id.register_Button){
-            //TODO go to register activity
+
             doRegister();
         }
         if(view.getId()==R.id.switch_btn){

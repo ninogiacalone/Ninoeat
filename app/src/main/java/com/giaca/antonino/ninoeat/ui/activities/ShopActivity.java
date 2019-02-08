@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,12 +18,18 @@ import java.util.ArrayList;
  * Created by anton on 31/01/2019.
  */
 
-public class ShopActivity  extends AppCompatActivity implements Shop_adapters.OnQuantityChangedListener {
+public class ShopActivity  extends AppCompatActivity implements Shop_adapters.OnQuantityChangedListener   {
     RecyclerView shoprv;
 
-Shop_adapters adapters;
+public  Shop_adapters adapters;
 RecyclerView.LayoutManager layoutManager;
 ArrayList<Shop> date;
+    TextView totale,nome,indirizzo;
+    Button checkout;
+    private float total=0;
+    ProgressBar progressBar;
+
+      Restaurant ciccio;
 
 
 
@@ -34,10 +39,21 @@ ArrayList<Shop> date;
         setContentView(R.layout.activity_shop);
         shoprv=findViewById(R.id.product_rv);
         layoutManager = new LinearLayoutManager(this);
+totale=findViewById(R.id.total3);
+progressBar=findViewById(R.id.progress_bar);
+nome=findViewById(R.id.nom);
+indirizzo=findViewById(R.id.ind);
+checkout=findViewById(R.id.check_out);
+
 
         adapters=new Shop_adapters(this,getDate());
+        adapters.setOnQuanityChangedListener(this);
         shoprv.setLayoutManager(layoutManager);
         shoprv.setAdapter(adapters);
+
+
+
+
     }
 
 
@@ -49,29 +65,35 @@ ArrayList<Shop> date;
         date.add(new Shop("HAMBURGER",19));
         date.add(new Shop("HAMBURGER",140));
         date.add(new Shop("HAMBURGER",170));
-        date.add(new Shop("PANINO",220));
-        date.add(new Shop("KEBAB",121));
+        date.add(new Shop("PANINO",2));
+        date.add(new Shop("KEBAB",11));
 
         return date;
 
     }
-private float total=0;
-    ProgressBar progressBar;
-    private void updateTotal(float item){
-            total+=item;
 
 
-        }
-        private  void updateProgress(int progress){
-            progressBar.setProgress(progress);
-        }
+
+
+
+
+
+    public void updateTotal(float item){
+        total= total + item;
+       totale.setText("Total: ".concat( String.valueOf(total)));
+    }
+
+    public void updateProgress(int progress){
+        progressBar.setProgress(progress);
+    }
 
     @Override
     public void onChange(float prezzo) {
         updateTotal(prezzo);
-        updateProgress((int)(total*100));
+        updateProgress((int)total*100);
     }
-
-
-
 }
+
+
+
+

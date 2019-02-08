@@ -45,15 +45,15 @@ public class MainActivity  extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        editor=getSharedPreferences("Ninoeat",MODE_PRIVATE).edit();
-        share=getSharedPreferences("Ninoeat",MODE_PRIVATE);
+        editor=getSharedPreferences("ninoeat",MODE_PRIVATE).edit();
+        share=getSharedPreferences("ninoeat",MODE_PRIVATE);
         layoutManagerGrid=new GridLayoutManager(this,2);
         restaurantRV = findViewById(R.id.places_rv);
         layoutManager = new LinearLayoutManager(this);
         adapter = new Restaurant_adapters(this, getData());
         adaptersgroup=new Restaurant_adaptersgroup(this,getData());
-        view=share.getBoolean("gridmode",false);
-        setMode();
+        view=share.getBoolean("gridmode",false );
+
 
 
     }
@@ -76,6 +76,7 @@ public class MainActivity  extends AppCompatActivity  {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+     setMode();
         return true;
     }
 
@@ -96,19 +97,19 @@ public class MainActivity  extends AppCompatActivity  {
 
     private void setMode()
     {
-        if(view){
+        if(!view){
             restaurantRV.setLayoutManager(layoutManagerGrid);
             restaurantRV.setAdapter(adaptersgroup);
-            editor.putBoolean("gridmode",true).commit();
+            editor.putBoolean("gridmode",false).commit();
             editor.apply();
 
-            view=false;
+            view=true;
         }else{
             restaurantRV.setLayoutManager(layoutManager);
             restaurantRV.setAdapter(adapter);
-            editor.putBoolean("gridmode",false).commit();
+            editor.putBoolean("gridmode",true).commit();
             editor.apply();
-            view=true;
+            view=false;
         }
 
 
