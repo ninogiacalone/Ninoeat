@@ -1,6 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+   <TextView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:id="@+id/riepilogo"
+       android:text="RIEPILOGO"
+       android:textSize="25dp"
+       android:padding="@dimen/cardview_default_radius"
+
+       android:textColor="@color/colorAccent"/>
+
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/riepnome"
+    android:text="Nome"
+    android:textSize="25dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/indirizzoriep"
+            android:text="Indirizzo"
+            android:textSize="25dp"/>
+
+
+
+
+
+        <android.support.v7.widget.RecyclerView
+    android:layout_width="match_parent"
+    android:layout_height="400dp"
+            android:id="@+id/prodd"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/proddd"
+            android:text="TOTAL:"
+            android:textColor="@color/colorAccent"
+            android:textSize="25dp"/>
+        </android.support.v7.widget.CardView>
 </LinearLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PAGA ADESSO"
+            android:id="@+id/paga"
+            android:padding="5dp"
+            android:layout_marginTop="570dp"
+
+
+
+            />
+
+
+
+
+
+
+
+
+
+
+
+
+</RelativeLayout>

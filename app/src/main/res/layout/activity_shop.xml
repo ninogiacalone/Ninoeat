@@ -10,6 +10,7 @@
         android:id="@+id/header"
         android:layout_height="wrap_content">
     <ImageView
+        android:id="@+id/imm"
     android:layout_width="120dp"
     android:layout_height="130dp"
         android:src="@drawable/images2"/>
@@ -72,7 +73,6 @@
             android:layout_gravity="bottom"
             android:indeterminateOnly="false"
             android:progress="0"
-
             android:min="0"
             android:id="@+id/progress_bar"
             android:progressTint="#f2a45b"
@@ -83,7 +83,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/check_out"
-    android:hint="Checkout"/>
+    android:hint="Checkout"
+    android:enabled="false"/>
+
 
     </LinearLayout>
 
