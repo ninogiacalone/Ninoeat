@@ -8,5 +8,9 @@
     <string name="email_errata">Emailerrata </string>
     <string name="numero_telefono">NumeroTelefono</string>
     <string name="checkout_menu">Checkout</string>
+    <string name="remove_title">Sei sicuro?</string>
+    <string name="be_careful">Alert</string>
+    <string name="conferma">Conferma</string>
+    <string name="cancella">cancella operazione</string>
 
 </resources>

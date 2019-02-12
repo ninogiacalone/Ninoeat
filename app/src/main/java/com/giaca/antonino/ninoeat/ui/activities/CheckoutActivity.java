@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,13 +19,14 @@ import java.util.ArrayList;
  * Created by anton on 31/01/2019.
  */
 
-public class CheckoutActivity extends AppCompatActivity implements View.OnClickListener{
+public class CheckoutActivity extends AppCompatActivity implements View.OnClickListener,OrderProductsAdapter.onItemRemovedListener{
 private TextView nomerest,indirizzorest,tot;
     private RecyclerView productRv;
     private Button payBtn;
     private LinearLayoutManager layoutManager;
     private OrderProductsAdapter adapter;
     private Order order;
+    private float total;
 
 
     @Override
@@ -38,9 +40,11 @@ private TextView nomerest,indirizzorest,tot;
         payBtn=findViewById(R.id.paga);
         payBtn.setOnClickListener(this);
        order=getOrder();
+       total=order.getTotal();
        layoutManager=new LinearLayoutManager(this);
        productRv.setLayoutManager(layoutManager);
        adapter=new OrderProductsAdapter(order.getProdotti(),this);
+       adapter.setOnItemRemovedListener(this);
        productRv.setAdapter(adapter);
        bindData();
     }
@@ -48,16 +52,20 @@ private TextView nomerest,indirizzorest,tot;
 private void bindData(){
      nomerest.setText(order.getRestaurant().getNome());
      indirizzorest.setText(order.getRestaurant().getIndirizzo());
-     tot.setText(String.valueOf(order.getTotal()));
+     tot.setText(String.valueOf("Totale: " + order.getTotal()));
 
 
 }
     public Order getOrder() {
-        Order order1= new Order();
-        order1.setProdotti(getProdotti());
-        order1.setRestaurant(getRestaurant());
-        order1.setTotal(30.00f);
-        return order1;
+        Order order2= new Order();
+        order2.setProdotti(getProdotti());
+        order2.setRestaurant(getRestaurant());
+        float prezzo=0.0f;
+        for(Shop i : order2.getProdotti()){
+            prezzo+=(i.getQuantity()*i.getPrezzo());
+        }
+        order2.setTotal(prezzo);
+        return order2;
 
     }
     private Restaurant getRestaurant() {
@@ -71,15 +79,31 @@ private void bindData(){
     private ArrayList<Shop> getProdotti(){
 
         ArrayList<Shop> date = new ArrayList<>();
-        date.add(new Shop("HAMBURGER",10));
-        date.add(new Shop("HAMBURGER",15));
-        date.add(new Shop("HAMBURGER",19));
-        date.add(new Shop("HAMBURGER",140));
-        date.add(new Shop("HAMBURGER",170));
-        date.add(new Shop("PANINO",2));
-        date.add(new Shop("KEBAB",11));
+        date.add(new Shop("HAMBURGER",10f));
+        date.add(new Shop("HAMBURGER",15f));
+        date.add(new Shop("HAMBURGER",19f));
+        date.add(new Shop("HAMBURGER",14f));
+        date.add(new Shop("HAMBURGER",17f));
+        date.add(new Shop("PANINO",2f));
+        date.add(new Shop("KEBAB",11f));
+        int cont =1;
+        for(Shop i : date){
+            i.setQuantity(cont);
+            cont++;
+        }
 
         return date;
 
+    }
+
+    public void onItemRemoved(float subtotale, int quantity){
+        updateTotal(subtotale, quantity);
+    }
+
+    private void updateTotal(float subtotal, int quantity) {
+        if(total == 0) return;
+        total -=(subtotal*quantity);
+        Log.i("ciao",String.valueOf(subtotal));
+        tot.setText(String.valueOf(total));
     }
 }

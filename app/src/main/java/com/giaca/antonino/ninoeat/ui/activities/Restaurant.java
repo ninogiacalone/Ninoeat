@@ -1,8 +1,7 @@
 package com.giaca.antonino.ninoeat.ui.activities;
 
-import android.media.Image;
-
-import java.util.ArrayList;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by anton on 04/02/2019.
@@ -22,7 +21,13 @@ public class Restaurant {
         this.urlimm=urlimm;
     }
 
+public Restaurant(JSONObject jsonRestaurant )throws JSONException{
+        nome=jsonRestaurant.getString("name");
+        indirizzo=jsonRestaurant.getString("indirizzo");
+        prezzo=Float.valueOf(jsonRestaurant.getString("MINIMO"));
+        urlimm=jsonRestaurant.getString("image_url");
 
+}
 
     public String getUrlimm() {
         return urlimm;

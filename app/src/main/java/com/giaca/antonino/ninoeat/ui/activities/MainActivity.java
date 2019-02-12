@@ -7,13 +7,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.giaca.antonino.ninoeat.R;
 import com.giaca.antonino.ninoeat.ui.activities.adapters.Restaurant_adapters;
 import com.giaca.antonino.ninoeat.ui.activities.adapters.Restaurant_adaptersgroup;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -23,13 +33,13 @@ import java.util.ArrayList;
  */
 
 public class MainActivity  extends AppCompatActivity  {
-
+private static final String TAG=MainActivity.class.getName();
     RecyclerView restaurantRV;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.LayoutManager layoutManagerGrid;
     Restaurant_adaptersgroup adaptersgroup;
     Restaurant_adapters adapter;
-    ArrayList<Restaurant> arrayList;
+    ArrayList<Restaurant> arrayList= new ArrayList<>();
     boolean view=false;
 
     SharedPreferences.Editor editor;
@@ -51,6 +61,41 @@ public class MainActivity  extends AppCompatActivity  {
         view=share.getBoolean("gridmode",false );
 
 
+        RequestQueue queque= Volley.newRequestQueue(this);
+        String url="http://5ba19290ee710f0014dd764c.mockapi.io/api/v1/restaurant"
+
+
+                ;
+        StringRequest stringRequest=new StringRequest(
+                Request.Method.GET,
+                url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.i(TAG,response);
+                        try {
+                            JSONArray restaurantjsonArray=new JSONArray(response);
+                            for(int i=0; i<restaurantjsonArray.length();i++){
+                                Restaurant restaurant=new Restaurant(restaurantjsonArray.getJSONObject(i));
+                                arrayList.add(restaurant);
+
+                            }
+                            adapter.setData(arrayList);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                      Log.e(TAG,error.getMessage());
+
+                    }
+                }
+        );
+queque.add(stringRequest);
 
     }
 
@@ -60,8 +105,6 @@ public class MainActivity  extends AppCompatActivity  {
         arrayList.add(new Restaurant("Burger king","Via Roma",10.50f,"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKeVeLnrjypUr31YKAwMzBpOmzRk_IO5utBlVhXyA5MWJwIZwt"));
         arrayList.add(new Restaurant("Pizzeria 'ciccio' ","Via Marsala",10.0f,"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvQU4vpPd_eOSu7b0PsKZBrZlinWAkqCze318Isq6pCYhErTY0"));
         arrayList.add(new Restaurant("Da Massimo","Via bergamo",15.00f,"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmwhkvt74amWk3BNqLpuE-UHggyLLsM-kIXrgsHOARuK8k5NWt"));
-
-
 
 
         return arrayList;

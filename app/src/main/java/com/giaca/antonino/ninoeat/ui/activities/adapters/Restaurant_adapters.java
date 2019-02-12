@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.model.GlideUrl;
 import com.giaca.antonino.ninoeat.R;
 import com.giaca.antonino.ninoeat.ui.activities.Restaurant;
 import com.giaca.antonino.ninoeat.ui.activities.ShopActivity;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
 
 public class Restaurant_adapters extends RecyclerView.Adapter {
 
-    private final Context context;
+    private  Context context;
     private LayoutInflater inflater;
     private ArrayList<Restaurant> data;
 
@@ -40,7 +39,12 @@ public class Restaurant_adapters extends RecyclerView.Adapter {
 
 
     }
+    public Restaurant_adapters(Context context){
+        inflater = LayoutInflater.from(context);
+        this.data =  new ArrayList<>();
+        this.context=context;
 
+    }
 
 
 
@@ -70,6 +74,10 @@ public class Restaurant_adapters extends RecyclerView.Adapter {
         return data.size();
     }
 
+    public void setData(ArrayList<Restaurant> data) {
+        this.data = data;
+        notifyDataSetChanged();
+    }
 
 
     public class RestaurantViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
