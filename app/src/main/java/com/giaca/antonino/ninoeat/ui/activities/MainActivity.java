@@ -11,14 +11,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.giaca.antonino.ninoeat.R;
+import com.giaca.antonino.ninoeat.services.RestController;
 import com.giaca.antonino.ninoeat.ui.activities.adapters.Restaurant_adapters;
 import com.giaca.antonino.ninoeat.ui.activities.adapters.Restaurant_adaptersgroup;
 
@@ -32,8 +30,8 @@ import java.util.ArrayList;
  * Created by anton on 31/01/2019.
  */
 
-public class MainActivity  extends AppCompatActivity  {
-private static final String TAG=MainActivity.class.getName();
+public class MainActivity  extends AppCompatActivity implements Response.Listener<String>,Response.ErrorListener {
+    private static final String TAG=MainActivity.class.getName();
     RecyclerView restaurantRV;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.LayoutManager layoutManagerGrid;
@@ -41,6 +39,7 @@ private static final String TAG=MainActivity.class.getName();
     Restaurant_adapters adapter;
     ArrayList<Restaurant> arrayList= new ArrayList<>();
     boolean view=false;
+    private RestController restController;
 
     SharedPreferences.Editor editor;
     SharedPreferences share;
@@ -56,46 +55,12 @@ private static final String TAG=MainActivity.class.getName();
         layoutManagerGrid=new GridLayoutManager(this,2);
         restaurantRV = findViewById(R.id.places_rv);
         layoutManager = new LinearLayoutManager(this);
-        adapter = new Restaurant_adapters(this, getData());
-        adaptersgroup=new Restaurant_adaptersgroup(this,getData());
+        adapter = new Restaurant_adapters(this);
+        adaptersgroup=new Restaurant_adaptersgroup(this);
         view=share.getBoolean("gridmode",false );
 
-
-        RequestQueue queque= Volley.newRequestQueue(this);
-        String url="http://5ba19290ee710f0014dd764c.mockapi.io/api/v1/restaurant"
-
-
-                ;
-        StringRequest stringRequest=new StringRequest(
-                Request.Method.GET,
-                url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Log.i(TAG,response);
-                        try {
-                            JSONArray restaurantjsonArray=new JSONArray(response);
-                            for(int i=0; i<restaurantjsonArray.length();i++){
-                                Restaurant restaurant=new Restaurant(restaurantjsonArray.getJSONObject(i));
-                                arrayList.add(restaurant);
-
-                            }
-                            adapter.setData(arrayList);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                      Log.e(TAG,error.getMessage());
-
-                    }
-                }
-        );
-queque.add(stringRequest);
+    restController=new RestController(this );
+        restController.getRequest(Restaurant.ENDPOINT,this,this);
 
     }
 
@@ -156,5 +121,27 @@ queque.add(stringRequest);
     }
 
 
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Log.e(TAG,error.getMessage());
+        Toast.makeText(this, error.getMessage(),Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
+    public void onResponse(String response) {
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+            for(int i=0;i<jsonArray.length();i++){
+                arrayList.add(new Restaurant(jsonArray.getJSONObject(i)));
+            }
+            adapter.setData(arrayList);
+            adaptersgroup.setData(arrayList);
+
+        }catch (JSONException e){
+            Log.e(TAG,e.getMessage());
+        }
+
+    }
 }
 

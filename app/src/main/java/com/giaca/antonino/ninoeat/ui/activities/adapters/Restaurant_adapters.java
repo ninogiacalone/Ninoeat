@@ -35,16 +35,17 @@ public class Restaurant_adapters extends RecyclerView.Adapter {
         inflater = LayoutInflater.from(context);
         this.data = data;
         this.context=context;
-
-
-
     }
+
+
+
+
     public Restaurant_adapters(Context context){
         inflater = LayoutInflater.from(context);
         this.data =  new ArrayList<>();
         this.context=context;
-
     }
+
 
 
 
@@ -63,9 +64,6 @@ public class Restaurant_adapters extends RecyclerView.Adapter {
         vh.prezzoMin.setText( "Prezzo minino "+data.get(i).getPrezzo());
 
         Glide.with(context).load(data.get(i).getUrlimm()).into(vh.imm);
-
-
-
 
     }
 
@@ -102,11 +100,21 @@ public class Restaurant_adapters extends RecyclerView.Adapter {
         }
 
 
+
         @Override
         public void onClick(View view) {
 
-            if(view.getId()==R.id.btnmenu)
-                context.startActivity(new Intent(context,ShopActivity.class));
+            if(view.getId()==R.id.btnmenu) {
+
+                Restaurant rest = data.get(getAdapterPosition());
+                //context.startActivity(new Intent(context,ShopActivity.class));
+                Intent intent = new Intent(context, ShopActivity.class);
+                intent.putExtra("name", rest.getNome());
+                intent.putExtra("address", rest.getIndirizzo());
+                intent.putExtra("minprice", rest.getPrezzo());
+                intent.putExtra("id",rest.getId());
+                context.startActivity(intent);
+            }
         }
     }
   }

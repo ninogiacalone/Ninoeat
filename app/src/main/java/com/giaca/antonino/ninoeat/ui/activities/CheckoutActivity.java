@@ -79,13 +79,13 @@ private void bindData(){
     private ArrayList<Shop> getProdotti(){
 
         ArrayList<Shop> date = new ArrayList<>();
-        date.add(new Shop("HAMBURGER",10f));
-        date.add(new Shop("HAMBURGER",15f));
-        date.add(new Shop("HAMBURGER",19f));
-        date.add(new Shop("HAMBURGER",14f));
-        date.add(new Shop("HAMBURGER",17f));
-        date.add(new Shop("PANINO",2f));
-        date.add(new Shop("KEBAB",11f));
+        date.add(new Shop("HAMBURGER",10f,""));
+        date.add(new Shop("HAMBURGER",15f,""));
+        date.add(new Shop("HAMBURGER",19f,""));
+        date.add(new Shop("HAMBURGER",14f,""));
+        date.add(new Shop("HAMBURGER",17f,""));
+        date.add(new Shop("PANINO",2f,""));
+        date.add(new Shop("KEBAB",11f,""));
         int cont =1;
         for(Shop i : date){
             i.setQuantity(cont);

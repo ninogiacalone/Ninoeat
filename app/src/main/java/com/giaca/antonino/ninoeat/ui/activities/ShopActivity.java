@@ -6,36 +6,48 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.giaca.antonino.ninoeat.R;
+import com.giaca.antonino.ninoeat.services.RestController;
 import com.giaca.antonino.ninoeat.ui.activities.adapters.Shop_adapters;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static android.view.View.*;
+import static android.view.View.OnClickListener;
 
 /**
  * Created by anton on 31/01/2019.
  */
 
-public class ShopActivity  extends AppCompatActivity implements Shop_adapters.OnQuantityChangedListener   {
+public class ShopActivity  extends AppCompatActivity implements Shop_adapters.OnQuantityChangedListener, Response.Listener<String>,Response.ErrorListener   {
     RecyclerView shoprv;
-
-public  Shop_adapters adapters;
-RecyclerView.LayoutManager layoutManager;
-ArrayList<Shop> date;
+    private static final String TAG=ShopActivity.class.getName();
+    public  Shop_adapters adapters;
+    RecyclerView.LayoutManager layoutManager;
+    ArrayList<Shop> date = new ArrayList<>();
     TextView totale,nome,indirizzo;
     Button checkout;
     private float total=0;
     ProgressBar progressBar;
     Restaurant restaurant;
     ImageView im;
+    float price;
 
+
+    private RestController restController;
 
 
 
@@ -52,10 +64,22 @@ ArrayList<Shop> date;
         indirizzo=findViewById(R.id.ind);
         checkout=findViewById(R.id.check_out);
 
-       restaurant=new Restaurant("Da ciccio","via roma",20f,"https://rovato5stelle.files.wordpress.com/2013/11/mcdonald.jpg");
-        nome.setText(restaurant.getNome());
-        indirizzo.setText(restaurant.getIndirizzo());
-        adapters=new Shop_adapters(this,getDate());
+        Intent intent = getIntent();
+
+        String name = intent.getExtras().getString("name");
+        String address = intent.getExtras().getString("address");
+        price = intent.getExtras().getFloat("minprice");
+        String id = intent.getExtras().getString("id");
+        String im=intent.getExtras().getString("urlimm");
+
+        Log.i("concatenazione", Restaurant.ENDPOINT.concat("/").concat(id));
+
+        restController=new RestController(this );
+        restController.getRequest(Restaurant.ENDPOINT.concat("/").concat(id),this,this);
+
+
+
+        adapters=new Shop_adapters(this,date);
         adapters.setOnQuanityChangedListener(this);
         shoprv.setLayoutManager(layoutManager);
         shoprv.setAdapter(adapters);
@@ -67,30 +91,11 @@ ArrayList<Shop> date;
             }
         });
 
-        progressBar.setMax(( int )restaurant.getPrezzo () *  100 );
 
-
-
+        nome.setText(name);
+        indirizzo.setText(address);
+        progressBar.setMax(( int )price *  100 );
     }
-
-
-    private ArrayList<Shop> getDate(){
-
-        date= new ArrayList<>();
-        date.add(new Shop("HAMBURGER",10));
-        date.add(new Shop("HAMBURGER",15));
-        date.add(new Shop("HAMBURGER",19));
-        date.add(new Shop("HAMBURGER",140));
-        date.add(new Shop("HAMBURGER",170));
-        date.add(new Shop("PANINO",2));
-        date.add(new Shop("KEBAB",11));
-
-        return date;
-
-    }
-
-
-
 
 
 
@@ -113,10 +118,30 @@ ArrayList<Shop> date;
     }
 
     private void btnEna(Button checkout){
-        if(total>= restaurant.getPrezzo()){
+        if(total>= price){
              checkout.setEnabled(true);
         }else
             checkout.setEnabled(false);
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Log.e(TAG,error.getMessage());
+        Toast.makeText(this, error.getMessage(),Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onResponse(String response) {
+        date = new ArrayList<>();
+        try {
+            JSONArray jsonArray = new JSONObject(response).getJSONArray("products");
+            for(int i=0;i<jsonArray.length();i++){
+                date.add(new Shop(jsonArray.getJSONObject(i)));
+            }
+            adapters.setData(date);
+        }catch (JSONException e){
+            Log.e(TAG,e.getMessage());
+        }
     }
 }
 

@@ -12,6 +12,8 @@ public class Restaurant {
     String indirizzo;
     float prezzo;
     String urlimm;
+    private String id;
+    public static final String ENDPOINT="restaurants";
 
 
     public Restaurant(String nome, String indirizzo, float prezzo,String urlimm) {
@@ -23,9 +25,10 @@ public class Restaurant {
 
 public Restaurant(JSONObject jsonRestaurant )throws JSONException{
         nome=jsonRestaurant.getString("name");
-        indirizzo=jsonRestaurant.getString("indirizzo");
-        prezzo=Float.valueOf(jsonRestaurant.getString("MINIMO"));
+        indirizzo=jsonRestaurant.getString("address");
+        prezzo=(float)(jsonRestaurant.getDouble("min_order"));
         urlimm=jsonRestaurant.getString("image_url");
+        id=jsonRestaurant.getString("id");
 
 }
 
@@ -62,5 +65,13 @@ public Restaurant(JSONObject jsonRestaurant )throws JSONException{
 
     public float getPrezzo() {
         return prezzo;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
