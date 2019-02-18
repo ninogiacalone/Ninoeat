@@ -8,6 +8,8 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.util.Map;
+
 /**
  * Created by anton on 14/02/2019.
  */
@@ -35,12 +37,16 @@ public  void getRequest(String endpoint, Response.Listener<String> success,Respo
     queue.add(request);
 }
 
-public void postRequest(String endpoint,Response.Listener<String> s,Response.ErrorListener err){
-    StringRequest post = new StringRequest(Request.Method.POST,
-    BASE_URL.concat(VERSION).concat(endpoint),
-            s,
-            err
-    );
-queue.add(post);
+public void postRequest(String endpoint, final Map<String,String>params,Response.Listener<String> success, Response.ErrorListener error){
+    String url = BASE_URL.concat(VERSION).concat(endpoint);
+    StringRequest request = new StringRequest(Request.Method.POST, url, success,error) {
+        @Override
+        protected Map<String,String> getParams(){
+            return params;
+        }
+
+    };
+
+    queue.add(request);
 }
 }

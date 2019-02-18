@@ -13,25 +13,33 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.giaca.antonino.ninoeat.R;
+import com.giaca.antonino.ninoeat.services.RestController;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by anton on 28/01/2019.
  */
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener,Response.Listener<String>,Response.ErrorListener {
+    private static final String TAG =RegisterActivity.class.getName();
     Button loginButton;
     Button RegisterBtn;
-    EditText  emailEt;
+    EditText emailEt;
     EditText passwordEt;
     Switch switchbtn;
     LinearLayout ll;
-    boolean a=false;
-    final  int len_pass=6;
+    boolean a = false;
+    final int len_pass = 6;
+    RestController restController;
 
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState){
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
@@ -40,69 +48,78 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         passwordEt = findViewById(R.id.password_et);
         loginButton = findViewById(R.id.login_Button);
         RegisterBtn = findViewById(R.id.register_Button);
-        switchbtn=findViewById(R.id.switch_btn);
+        switchbtn = findViewById(R.id.switch_btn);
 
         loginButton.setOnClickListener(this);
         RegisterBtn.setOnClickListener(this);
         switchbtn.setOnClickListener(this);
-        ll=findViewById(R.id.ll_layout);
-
-        loginButton=findViewById(R.id.login_Button);
-        Log.i("MainActivity","Activity created");
-        if(hasInvitationCode())
+        ll = findViewById(R.id.ll_layout);
+restController= new RestController(this);
+        loginButton = findViewById(R.id.login_Button);
+        Log.i("MainActivity", "Activity created");
+        if (hasInvitationCode())
             RegisterBtn.setVisibility(View.INVISIBLE);
     }
-    private boolean hasInvitationCode(){
+
+    private boolean hasInvitationCode() {
 
         return false;
     }
 
 
-
-
-
-
-
-
     private void doLogin() {
-        if(checkemail()&&checkpasw()==true){
+      /*  if(checkemail()&&checkpasw()==true){
             Intent intent1= new Intent(LoginActivity.this,RegisterActivity.class);
             String email=emailEt.getText().toString();
             intent1.putExtra("email",email);
             startActivity(intent1);
             finish();
+        }*/
+        String email1 = emailEt.getText().toString();
+        String password1 = passwordEt.getText().toString();
+        if (!checkemail(email1)) {
+            showToast(" email invalida");
+            return;
+
         }
+        if (!checkpasw(password1)) {
+            showToast("pass invalida");
+            return;
+
+        }
+        Map<String,String> params= new HashMap<>();
+        params.put("identifier",email1);
+        params.put("password",password1);
 
 
+        restController.postRequest(User.LOGIN_ENDPOINT,params,this,this);
+        showToast("eseguito");
     }
 
 
+    public void doRegister() {
 
-
-
-    public void doRegister(){
-
-        Intent intet= new Intent(LoginActivity.this,RegisterActivity.class);
+        Intent intet = new Intent(LoginActivity.this, RegisterActivity.class);
         setContentView(R.layout.register_activity);
         startActivity(intet);
         finish();
 
     }
-    private boolean checkpasw(){
-        if (passwordEt.getText().length()>len_pass) {
-            String stringa = "password ok";
-            showToast(stringa);
+
+    private boolean checkpasw(String password1) {
+        if (passwordEt.getText().length() > len_pass) {
+
             return true;
 
 
         } else {
-            String stringa = "password errata";
-            showToast(stringa);
+
             return false;
         }
     }
-    private boolean checkemail(){
-        String email = emailEt.getText().toString();
+
+    private boolean checkemail(String email) {
+        email = emailEt.getText().toString();
 
         if (email.contains("@") && email.contains(".") && email.length() > 2) {
             String stringa1 = "email ok";
@@ -119,22 +136,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void showToast(String stringa){
-        Toast.makeText(this,stringa ,Toast.LENGTH_LONG).show();
+    private void showToast(String stringa) {
+        Toast.makeText(this, stringa, Toast.LENGTH_LONG).show();
 
 
     }
+
     @Override
     public void onClick(View view) {
 
-        if(view.getId()==R.id.login_Button){
+        if (view.getId() == R.id.login_Button) {
             doLogin();
 
-        }else if (view.getId()==R.id.register_Button){
-
-            doRegister();
+        } else if (view.getId() == R.id.register_Button) {
+            startActivity(new Intent(this, RegisterActivity.class));
         }
-        if(view.getId()==R.id.switch_btn){
+        if (view.getId() == R.id.switch_btn) {
             changecolour(ll);
         }
     }
@@ -145,8 +162,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             a = true;
         } else {
             ll.setBackgroundColor(Color.WHITE);
-            a=false;
+            a = false;
         }
 
     }
+
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+        Log.e(TAG,error.getMessage());
+        Toast.makeText(this, error.getMessage(),Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onResponse(String response) {
+
+
 }
+}
+
