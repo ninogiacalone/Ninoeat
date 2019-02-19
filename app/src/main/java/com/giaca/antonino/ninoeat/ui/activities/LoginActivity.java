@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.giaca.antonino.ninoeat.R;
 import com.giaca.antonino.ninoeat.services.RestController;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +40,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     boolean a = false;
     final int len_pass = 6;
     RestController restController;
+    public final String EMAIL_KEY="email";
 
 
     @Override
@@ -171,13 +176,32 @@ restController= new RestController(this);
     @Override
     public void onErrorResponse(VolleyError error) {
         Log.e(TAG,error.getMessage());
-        Toast.makeText(this, error.getMessage(),Toast.LENGTH_LONG).show();
+        showToast(error.getMessage());
+
     }
 
     @Override
     public void onResponse(String response) {
+Log.d(TAG,response);
+
+/*
+Intent i =new Intent();
+i.putExtra("response",response);
+setResult(Activity.RESULT_OK,i);
+finish();*/
+
+        try {
+            JSONObject jsonResponse= new JSONObject(response );
+            SharedPreferencesUtils.putValue(this,"",jsonResponse.getString("jwt"));
+            LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent(MainActivity.LOGIN_ACTION));
 
 
-}
+            finish();
+        } catch (JSONException e) {
+            Log.e(TAG,e.getMessage());
+        }
+
+
+    }
 }
 

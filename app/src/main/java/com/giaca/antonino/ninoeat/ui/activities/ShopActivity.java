@@ -1,5 +1,6 @@
 package com.giaca.antonino.ninoeat.ui.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,6 +20,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.bumptech.glide.Glide;
 import com.giaca.antonino.ninoeat.R;
 import com.giaca.antonino.ninoeat.services.RestController;
 import com.giaca.antonino.ninoeat.ui.activities.adapters.Shop_adapters;
@@ -32,37 +37,40 @@ import static android.view.View.OnClickListener;
  * Created by anton on 31/01/2019.
  */
 
-public class ShopActivity  extends AppCompatActivity implements Shop_adapters.OnQuantityChangedListener, Response.Listener<String>,Response.ErrorListener   {
+public class ShopActivity  extends AppCompatActivity implements Shop_adapters.OnQuantityChangedListener, Response.Listener<String>,Response.ErrorListener {
     RecyclerView shoprv;
-    private static final String TAG=ShopActivity.class.getName();
-    public  Shop_adapters adapters;
+
+    public Shop_adapters adapters;
     RecyclerView.LayoutManager layoutManager;
     ArrayList<Shop> date = new ArrayList<>();
-    TextView totale,nome,indirizzo;
+    TextView totale, nome, indirizzo;
     Button checkout;
-    private float total=0;
+    private float total = 0;
     ProgressBar progressBar;
+    Menu menu;
     Restaurant restaurant;
     ImageView im;
     float price;
 
-
+    public static final String RESTAURANT_ID_KEY = "RESTAURANT_ID_KEY";
+    private static final String TAG = ShopActivity.class.getSimpleName();
+    private static final int LOGIN_REQUEST_CODE = 2001;
     private RestController restController;
-
+    private String restaurantId;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop);
-        im=findViewById(R.id.imm);
-        shoprv=findViewById(R.id.product_rv);
+        im = findViewById(R.id.imm);
+        shoprv = findViewById(R.id.product_rv);
         layoutManager = new LinearLayoutManager(this);
-        totale=findViewById(R.id.total3);
-         progressBar=findViewById(R.id.progress_bar);
-        nome=findViewById(R.id.nom);
-        indirizzo=findViewById(R.id.ind);
-        checkout=findViewById(R.id.check_out);
+        totale = findViewById(R.id.total3);
+        progressBar = findViewById(R.id.progress_bar);
+        nome = findViewById(R.id.nom);
+        indirizzo = findViewById(R.id.ind);
+        checkout = findViewById(R.id.check_out);
 
         Intent intent = getIntent();
 
@@ -70,77 +78,126 @@ public class ShopActivity  extends AppCompatActivity implements Shop_adapters.On
         String address = intent.getExtras().getString("address");
         price = intent.getExtras().getFloat("minprice");
         String id = intent.getExtras().getString("id");
-        String im=intent.getExtras().getString("urlimm");
+        String im = intent.getExtras().getString("urlimm");
 
-        Log.i("concatenazione", Restaurant.ENDPOINT.concat("/").concat(id));
-
-        restController=new RestController(this );
-        restController.getRequest(Restaurant.ENDPOINT.concat("/").concat(id),this,this);
+//        Log.i("concatenazione", Restaurant.ENDPOINT.concat("/").concat(id));
 
 
 
-        adapters=new Shop_adapters(this,date);
+
+        adapters = new Shop_adapters(this, date);
         adapters.setOnQuanityChangedListener(this);
         shoprv.setLayoutManager(layoutManager);
         shoprv.setAdapter(adapters);
+
         checkout.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(ShopActivity.this,CheckoutActivity.class));
+                startActivity(new Intent(ShopActivity.this, CheckoutActivity.class));
                 finish();
             }
         });
+        restaurantId = getIntent().getStringExtra(ShopActivity.RESTAURANT_ID_KEY);
+        restController = new RestController(this);
+        restController.getRequest(
+                Restaurant.ENDPOINT.concat(restaurantId),
+                this,
+                this);
 
-
-        nome.setText(name);
-        indirizzo.setText(address);
-        progressBar.setMax(( int )price *  100 );
     }
 
 
-
-
-    public void updateTotal(float item){
-        total= total + item;
-       totale.setText("Total: ".concat( String.valueOf(total)));
+    public void updateTotal(float item) {
+        total = total + item;
+        totale.setText("Total: ".concat(String.valueOf(total)));
         btnEna(checkout);
 
     }
 
-    public void updateProgress(int progress){
+    public void updateProgress(int progress) {
         progressBar.setProgress(progress);
     }
+    private void bindData() {
+        nome.setText(restaurant.getNome());
+        indirizzo.setText(restaurant.getIndirizzo());
+        Glide.with(this).load(restaurant.getUrlimm()).into(im);
+        progressBar.setMax((int) restaurant.getPrezzo() * 100);
+    }
+
 
     @Override
     public void onChange(float prezzo) {
         updateTotal(prezzo);
-        updateProgress((int)total*100);
+        updateProgress((int) total * 100);
+        btnEna(checkout);
+
     }
 
-    private void btnEna(Button checkout){
-        if(total>= price){
-             checkout.setEnabled(true);
-        }else
+    public void btnEna(Button checkout) {
+        if (total >= price) {
+            checkout.setEnabled(true);
+        } else
             checkout.setEnabled(false);
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.login_menu) {
+            Intent intent2 = new Intent(this, LoginActivity.class);
+            startActivityForResult(intent2, LOGIN_REQUEST_CODE);
+
+        } else if (item.getItemId() == R.id.checkout_menu) {
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.shop_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public void onErrorResponse(VolleyError error) {
-        Log.e(TAG,error.getMessage());
-        Toast.makeText(this, error.getMessage(),Toast.LENGTH_LONG).show();
+        Log.e(TAG, error.getMessage());
+        Toast.makeText(this, error.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onResponse(String response) {
-        date = new ArrayList<>();
+
         try {
-            JSONArray jsonArray = new JSONObject(response).getJSONArray("products");
-            for(int i=0;i<jsonArray.length();i++){
+            JSONObject jsonObject = new JSONObject(response);
+            restaurant= new Restaurant(jsonObject);
+            JSONArray jsonArray=jsonObject.getJSONArray("products");
+            date = new ArrayList<>();
+            for (int i = 0; i < jsonArray.length(); i++) {
                 date.add(new Shop(jsonArray.getJSONObject(i)));
             }
+bindData();
             adapters.setData(date);
-        }catch (JSONException e){
-            Log.e(TAG,e.getMessage());
+        } catch (JSONException e) {
+            Log.e(TAG, e.getMessage());
+        }
+
+
+    }
+
+
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.d(TAG, "requestCode" + requestCode);
+        Log.d(TAG, "resultCode" + resultCode);
+        if (requestCode == LOGIN_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Log.d(TAG, data.getStringExtra("response"));
+            menu.findItem(R.id.login_menu).setTitle("Profile").setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    startActivity(new Intent(ShopActivity.this, ProfileActivity.class));
+                    return true;
+                }
+            });
+
         }
     }
 }

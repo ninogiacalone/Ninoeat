@@ -75,7 +75,6 @@ private void bindData(){
     public void onClick(View view) {
 
     }
-
     private ArrayList<Shop> getProdotti(){
 
         ArrayList<Shop> date = new ArrayList<>();

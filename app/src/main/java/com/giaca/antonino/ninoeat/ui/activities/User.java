@@ -10,6 +10,7 @@ import org.json.JSONObject;
 public class User {
     public static final String REGISTER_ENDPOINT="auth/local/register";
     public static final String LOGIN_ENDPOINT = "auth/local";
+    public static final String ACCESS_TOKEN_KEY = "ACCESS_TOKEN_KEY";
 
     String email;
     String password;
@@ -17,12 +18,24 @@ public class User {
     String accessToken;
     String id;
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+
+
     public User(JSONObject user,String accessToken) throws JSONException {
         this.accessToken=accessToken;
         id=user.getString("id");
         email=user.getString("email");
         username=user.getString("username");
-        password=user.getString("password");
+
+
+
 
     }
 

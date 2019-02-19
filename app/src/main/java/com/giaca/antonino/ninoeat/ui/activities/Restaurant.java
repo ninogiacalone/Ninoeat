@@ -13,7 +13,7 @@ public class Restaurant {
     float prezzo;
     String urlimm;
     private String id;
-    public static final String ENDPOINT="restaurants";
+    public static final String ENDPOINT="restaurants/";
 
 
     public Restaurant(String nome, String indirizzo, float prezzo,String urlimm) {

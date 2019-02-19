@@ -28,15 +28,16 @@ import java.util.Map;
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener,Response.Listener<String>,Response.ErrorListener {
 
 
-    private static final String TAG =RegisterActivity.class.getName();
-    boolean emailok=false;
+        private static final String TAG = RegisterActivity.class.getSimpleName();
+        boolean emailok=false;
         boolean passwordok=false;
         boolean numerook=false;
         EditText emailEt,usernameEt;
         EditText passwordEt;
         EditText numerotel;
         Button register;
-    RestController restController;
+        RestController restController;
+
 
         @Override
 
@@ -50,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             numerotel = findViewById(R.id.phone_et);
 
-
+            restController=new RestController(this);
             restController =  new RestController(this);
             register.setOnClickListener(this);
             emailEt.addTextChangedListener(new TextWatcher() {
@@ -110,7 +111,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 }
             });
         }
-        private void checkemail(String email){
+             private void checkemail(String email){
             if (email.contains("@") && email.contains(".") && email.length() > 2 ) {
                 emailok=true;
 
@@ -118,7 +119,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 emailok=false;
             }
         }
-        private void checkpassword(String password){
+            private void checkpassword(String password){
             if (password.length() > 6) {
                 passwordok=true;
 
@@ -128,7 +129,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
 
 
-        private void btncheck(Button button){
+            private void btncheck(Button button){
             if(emailok && passwordok && numerook){
                 button.setEnabled(true);
             }else
@@ -153,11 +154,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public void onResponse(String response) {
         Log.d(TAG,response);
         try {
-            JSONObject jsonObject= new JSONObject(response);
-            String accessToken=jsonObject.getString("jwt");
-            User user=new User(jsonObject.getJSONObject("user"),accessToken);
+            JSONObject responseObject= new JSONObject(response);
+            String accessToken=responseObject.getString("jwt");
+            SharedPreferencesUtils.putValue(this,User.ACCESS_TOKEN_KEY,accessToken);
+            User user  =new User(responseObject.getJSONObject("user"),accessToken);
         } catch (JSONException e) {
             e.printStackTrace();
+
+
         }
 
     }

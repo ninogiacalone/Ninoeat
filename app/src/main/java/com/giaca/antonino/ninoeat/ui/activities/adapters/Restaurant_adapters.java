@@ -109,10 +109,11 @@ public class Restaurant_adapters extends RecyclerView.Adapter {
                 Restaurant rest = data.get(getAdapterPosition());
                 //context.startActivity(new Intent(context,ShopActivity.class));
                 Intent intent = new Intent(context, ShopActivity.class);
-                intent.putExtra("name", rest.getNome());
+                intent.putExtra(ShopActivity.RESTAURANT_ID_KEY,data.get(getAdapterPosition()).getId());
+                /*intent.putExtra("name", rest.getNome());
                 intent.putExtra("address", rest.getIndirizzo());
                 intent.putExtra("minprice", rest.getPrezzo());
-                intent.putExtra("id",rest.getId());
+                intent.putExtra("id",rest.getId());*/
                 context.startActivity(intent);
             }
         }
