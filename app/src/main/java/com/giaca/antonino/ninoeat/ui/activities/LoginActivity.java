@@ -1,5 +1,6 @@
 package com.giaca.antonino.ninoeat.ui.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -184,11 +185,11 @@ restController= new RestController(this);
     public void onResponse(String response) {
 Log.d(TAG,response);
 
-/*
+
 Intent i =new Intent();
 i.putExtra("response",response);
 setResult(Activity.RESULT_OK,i);
-finish();*/
+finish();
 
         try {
             JSONObject jsonResponse= new JSONObject(response );

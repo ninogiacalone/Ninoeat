@@ -155,7 +155,9 @@ public class ShopActivity  extends AppCompatActivity implements Shop_adapters.On
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.shop_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+        this.menu = menu;
+        return true;
+
     }
 
     @Override
