@@ -1,17 +1,32 @@
 package com.giaca.antonino.ninoeat.ui.activities;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Created by anton on 07/02/2019.
  */
-
+@Entity(tableName = "Product")
 public class Shop {
+
+
+@ColumnInfo(name = "name")
     String cibo;
+
+    @ColumnInfo(name = "quantity")
     int quantity=0;
+
+    @ColumnInfo(name = "price")
     float prezzo;
+
+
+
     String urlimm;
+
+    @ColumnInfo(name = "product_id")
     String id;
 
     public String getUrlimm() {

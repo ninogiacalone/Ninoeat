@@ -13,6 +13,7 @@ import com.giaca.antonino.ninoeat.R;
 import com.giaca.antonino.ninoeat.ui.activities.Shop;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by anton on 07/02/2019.
@@ -22,6 +23,10 @@ public class Shop_adapters extends RecyclerView.Adapter  {
   //  private Context context;
     private LayoutInflater inflater;
     private ArrayList<Shop> date;
+
+    public List<Shop> getData() {
+        return date;
+    }
 
     public interface OnQuantityChangedListener{
 

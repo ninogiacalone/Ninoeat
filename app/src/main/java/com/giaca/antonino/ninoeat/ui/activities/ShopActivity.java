@@ -2,8 +2,11 @@ package com.giaca.antonino.ninoeat.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.bumptech.glide.Glide;
 import com.giaca.antonino.ninoeat.R;
+import com.giaca.antonino.ninoeat.services.AppDatabase;
 import com.giaca.antonino.ninoeat.services.RestController;
 import com.giaca.antonino.ninoeat.ui.activities.adapters.Shop_adapters;
 
@@ -30,6 +34,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.view.View.OnClickListener;
 
@@ -37,7 +42,7 @@ import static android.view.View.OnClickListener;
  * Created by anton on 31/01/2019.
  */
 
-public class ShopActivity  extends AppCompatActivity implements Shop_adapters.OnQuantityChangedListener, Response.Listener<String>,Response.ErrorListener {
+public class ShopActivity  extends AppCompatActivity implements Shop_adapters.OnQuantityChangedListener, Response.Listener<String>,Response.ErrorListener,View.OnClickListener {
     RecyclerView shoprv;
 
     public Shop_adapters adapters;
@@ -200,6 +205,29 @@ bindData();
                 }
             });
 
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId()==R.id.checkout_menu){
+          new   SaveOrder().execute();
+        }
+    }
+
+    class SaveOrder extends AsyncTask<Void,Void,Void>{
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Order order=new Order();
+            order.setTotal(total);
+            order.setRestaurant(restaurant);
+            List<Shop> selected=adapters.getData();
+            selected.removeIf(Shop->Shop.getQuantity()<1);
+                order.setProdotti((ArrayList<Shop>) selected);
+            AppDatabase.getAppDatabase(ShopActivity.this).orderDao().insert(order);
+                            return null;
         }
     }
 }
