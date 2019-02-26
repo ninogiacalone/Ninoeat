@@ -24,6 +24,11 @@ private ArrayList<Shop> date;
 private Context context;
 private LayoutInflater inflater;
 
+    public void setData(ArrayList<Shop> data) {
+        this.date = data;
+        notifyDataSetChanged();
+    }
+
 
     public interface onItemRemovedListener{
         void onItemRemoved(float subtotal, int quantity);

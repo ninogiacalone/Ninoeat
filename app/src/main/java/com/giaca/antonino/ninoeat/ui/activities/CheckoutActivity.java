@@ -1,5 +1,6 @@
 package com.giaca.antonino.ninoeat.ui.activities;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +12,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.giaca.antonino.ninoeat.R;
+import com.giaca.antonino.ninoeat.services.AppDatabase;
 import com.giaca.antonino.ninoeat.ui.activities.adapters.OrderProductsAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by anton on 31/01/2019.
@@ -46,16 +49,36 @@ private TextView nomerest,indirizzorest,tot;
        adapter=new OrderProductsAdapter(order.getProdotti(),this);
        adapter.setOnItemRemovedListener(this);
        productRv.setAdapter(adapter);
-       bindData();
+       new GetOrder().execute();
+
     }
 
-private void bindData(){
+private void bindData(Order order){
      nomerest.setText(order.getRestaurant().getNome());
      indirizzorest.setText(order.getRestaurant().getIndirizzo());
      tot.setText(String.valueOf("Totale: " + order.getTotal()));
+     adapter.setData(order.getProdotti());
 
 
 }
+
+
+class GetOrder extends AsyncTask<Void,Void,Void>{
+    private List<Order> orders;
+
+    @Override
+    protected Void doInBackground(Void... voids) {
+        this.orders = AppDatabase.getAppDatabase(CheckoutActivity.this).orderDao().getAll();
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        bindData(orders.get(0));
+    }
+}
+
+
     public Order getOrder() {
         Order order2= new Order();
         order2.setProdotti(getProdotti());
@@ -104,5 +127,5 @@ private void bindData(){
         total -=(subtotal*quantity);
         Log.i("ciao",String.valueOf(subtotal));
         tot.setText(String.valueOf(total));
-    }
+}
 }
